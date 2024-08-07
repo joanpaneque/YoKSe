@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Baseline;
 
-use const FILE_IGNORE_NEW_LINES;
 use function assert;
 use function file;
 use function is_file;
@@ -17,37 +16,35 @@ use function sha1;
 use PHPUnit\Runner\FileDoesNotExistException;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Issue
+final class Issue
 {
     /**
-     * @var non-empty-string
+     * @psalm-var non-empty-string
      */
-    private string $file;
+    private readonly string $file;
 
     /**
-     * @var positive-int
+     * @psalm-var positive-int
      */
-    private int $line;
+    private readonly int $line;
 
     /**
-     * @var non-empty-string
+     * @psalm-var non-empty-string
      */
-    private string $hash;
+    private readonly string $hash;
 
     /**
-     * @var non-empty-string
+     * @psalm-var non-empty-string
      */
-    private string $description;
+    private readonly string $description;
 
     /**
-     * @param non-empty-string  $file
-     * @param positive-int      $line
-     * @param ?non-empty-string $hash
-     * @param non-empty-string  $description
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     * @psalm-param ?non-empty-string $hash
+     * @psalm-param non-empty-string $description
      *
      * @throws FileDoesNotExistException
      * @throws FileDoesNotHaveLineException
@@ -62,10 +59,10 @@ final readonly class Issue
     }
 
     /**
-     * @param non-empty-string $file
-     * @param positive-int     $line
-     * @param non-empty-string $hash
-     * @param non-empty-string $description
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     * @psalm-param non-empty-string $hash
+     * @psalm-param non-empty-string $description
      */
     private function __construct(string $file, int $line, string $hash, string $description)
     {
@@ -76,7 +73,7 @@ final readonly class Issue
     }
 
     /**
-     * @return non-empty-string
+     * @psalm-return non-empty-string
      */
     public function file(): string
     {
@@ -84,7 +81,7 @@ final readonly class Issue
     }
 
     /**
-     * @return positive-int
+     * @psalm-return positive-int
      */
     public function line(): int
     {
@@ -92,7 +89,7 @@ final readonly class Issue
     }
 
     /**
-     * @return non-empty-string
+     * @psalm-return non-empty-string
      */
     public function hash(): string
     {
@@ -100,7 +97,7 @@ final readonly class Issue
     }
 
     /**
-     * @return non-empty-string
+     * @psalm-return non-empty-string
      */
     public function description(): string
     {
@@ -116,13 +113,13 @@ final readonly class Issue
     }
 
     /**
-     * @param non-empty-string $file
-     * @param positive-int     $line
+     * @psalm-param non-empty-string $file
+     * @psalm-param positive-int $line
+     *
+     * @psalm-return non-empty-string
      *
      * @throws FileDoesNotExistException
      * @throws FileDoesNotHaveLineException
-     *
-     * @return non-empty-string
      */
     private static function calculateHash(string $file, int $line): string
     {
@@ -140,7 +137,7 @@ final readonly class Issue
 
         $hash = sha1($lines[$key]);
 
-        assert($hash !== '');
+        assert(!empty($hash));
 
         return $hash;
     }

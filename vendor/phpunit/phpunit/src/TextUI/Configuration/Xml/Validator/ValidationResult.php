@@ -9,27 +9,24 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use const PHP_EOL;
 use function sprintf;
 use function trim;
 use LibXMLError;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-final readonly class ValidationResult
+final class ValidationResult
 {
     /**
-     * @var array<int, list<string>>
+     * @psalm-var array<int,list<string>>
      */
-    private array $validationErrors;
+    private readonly array $validationErrors;
 
     /**
-     * @param array<int, LibXMLError> $errors
+     * @psalm-param array<int,LibXMLError> $errors
      */
     public static function fromArray(array $errors): self
     {
@@ -46,9 +43,6 @@ final readonly class ValidationResult
         return new self($validationErrors);
     }
 
-    /**
-     * @param array<int, list<string>> $validationErrors
-     */
     private function __construct(array $validationErrors)
     {
         $this->validationErrors = $validationErrors;

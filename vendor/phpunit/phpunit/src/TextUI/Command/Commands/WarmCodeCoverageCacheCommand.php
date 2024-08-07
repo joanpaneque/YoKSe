@@ -19,16 +19,12 @@ use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @codeCoverageIgnore
  */
-final readonly class WarmCodeCoverageCacheCommand implements Command
+final class WarmCodeCoverageCacheCommand implements Command
 {
-    private Configuration $configuration;
-    private CodeCoverageFilterRegistry $codeCoverageFilterRegistry;
+    private readonly Configuration $configuration;
+    private readonly CodeCoverageFilterRegistry $codeCoverageFilterRegistry;
 
     public function __construct(Configuration $configuration, CodeCoverageFilterRegistry $codeCoverageFilterRegistry)
     {

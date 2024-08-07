@@ -41,9 +41,6 @@ abstract class Type
         return $type;
     }
 
-    /**
-     * @param non-empty-string $typeName
-     */
     public static function fromName(string $typeName, bool $allowsNull): self
     {
         return match (strtolower($typeName)) {
@@ -68,7 +65,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true CallableType $this
+     * @psalm-assert-if-true CallableType $this
      */
     public function isCallable(): bool
     {
@@ -76,7 +73,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true TrueType $this
+     * @psalm-assert-if-true TrueType $this
      */
     public function isTrue(): bool
     {
@@ -84,7 +81,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true FalseType $this
+     * @psalm-assert-if-true FalseType $this
      */
     public function isFalse(): bool
     {
@@ -92,7 +89,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true GenericObjectType $this
+     * @psalm-assert-if-true GenericObjectType $this
      */
     public function isGenericObject(): bool
     {
@@ -100,7 +97,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true IntersectionType $this
+     * @psalm-assert-if-true IntersectionType $this
      */
     public function isIntersection(): bool
     {
@@ -108,7 +105,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true IterableType $this
+     * @psalm-assert-if-true IterableType $this
      */
     public function isIterable(): bool
     {
@@ -116,7 +113,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true MixedType $this
+     * @psalm-assert-if-true MixedType $this
      */
     public function isMixed(): bool
     {
@@ -124,7 +121,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true NeverType $this
+     * @psalm-assert-if-true NeverType $this
      */
     public function isNever(): bool
     {
@@ -132,7 +129,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true NullType $this
+     * @psalm-assert-if-true NullType $this
      */
     public function isNull(): bool
     {
@@ -140,7 +137,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true ObjectType $this
+     * @psalm-assert-if-true ObjectType $this
      */
     public function isObject(): bool
     {
@@ -148,7 +145,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true SimpleType $this
+     * @psalm-assert-if-true SimpleType $this
      */
     public function isSimple(): bool
     {
@@ -156,7 +153,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true StaticType $this
+     * @psalm-assert-if-true StaticType $this
      */
     public function isStatic(): bool
     {
@@ -164,7 +161,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true UnionType $this
+     * @psalm-assert-if-true UnionType $this
      */
     public function isUnion(): bool
     {
@@ -172,7 +169,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true UnknownType $this
+     * @psalm-assert-if-true UnknownType $this
      */
     public function isUnknown(): bool
     {
@@ -180,7 +177,7 @@ abstract class Type
     }
 
     /**
-     * @phpstan-assert-if-true VoidType $this
+     * @psalm-assert-if-true VoidType $this
      */
     public function isVoid(): bool
     {
@@ -189,9 +186,6 @@ abstract class Type
 
     abstract public function isAssignable(self $other): bool;
 
-    /**
-     * @return non-empty-string
-     */
     abstract public function name(): string;
 
     abstract public function allowsNull(): bool;

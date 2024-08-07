@@ -26,16 +26,14 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class PharLoader
+final class PharLoader
 {
     /**
-     * @param non-empty-string $directory
+     * @psalm-param non-empty-string $directory
      *
-     * @return list<string>
+     * @psalm-return list<string>
      */
     public function loadPharExtensionsInDirectory(string $directory): array
     {
@@ -105,6 +103,7 @@ final readonly class PharLoader
             }
 
             try {
+                /** @psalm-suppress UnresolvableInclude */
                 @require $file;
             } catch (Throwable $t) {
                 Event\Facade::emitter()->testRunnerTriggeredWarning(

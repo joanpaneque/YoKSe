@@ -13,11 +13,9 @@ use PHPUnit\Event\TestRunner\DeprecationTriggered;
 use PHPUnit\Event\TestRunner\DeprecationTriggeredSubscriber;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestRunnerTriggeredDeprecationSubscriber extends Subscriber implements DeprecationTriggeredSubscriber
+final class TestRunnerTriggeredDeprecationSubscriber extends Subscriber implements DeprecationTriggeredSubscriber
 {
     public function notify(DeprecationTriggered $event): void
     {

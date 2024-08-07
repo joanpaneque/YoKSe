@@ -16,12 +16,12 @@ final class Factory
     private static ?Factory $instance = null;
 
     /**
-     * @var list<Comparator>
+     * @psalm-var list<Comparator>
      */
     private array $customComparators = [];
 
     /**
-     * @var list<Comparator>
+     * @psalm-var list<Comparator>
      */
     private array $defaultComparators = [];
 

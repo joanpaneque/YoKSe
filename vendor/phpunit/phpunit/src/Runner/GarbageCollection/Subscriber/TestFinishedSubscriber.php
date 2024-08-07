@@ -14,11 +14,9 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
+final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException

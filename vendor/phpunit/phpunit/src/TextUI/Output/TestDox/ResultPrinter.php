@@ -27,36 +27,32 @@ use PHPUnit\TextUI\Output\Printer;
 use PHPUnit\Util\Color;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ResultPrinter
+final class ResultPrinter
 {
-    private Printer $printer;
-    private bool $colors;
-    private int $columns;
-    private bool $printSummary;
+    private readonly Printer $printer;
+    private readonly bool $colors;
 
-    public function __construct(Printer $printer, bool $colors, int $columns, bool $printSummary)
+    public function __construct(Printer $printer, bool $colors)
     {
-        $this->printer      = $printer;
-        $this->colors       = $colors;
-        $this->columns      = $columns;
-        $this->printSummary = $printSummary;
+        $this->printer = $printer;
+        $this->colors  = $colors;
     }
 
     /**
-     * @param array<string, TestResultCollection> $tests
+     * @psalm-param array<string, TestResultCollection> $tests
      */
     public function print(array $tests): void
     {
-        $this->doPrint($tests, false);
+        foreach ($tests as $prettifiedClassName => $_tests) {
+            $this->printPrettifiedClassName($prettifiedClassName);
 
-        if ($this->printSummary) {
-            $this->printer->print('Summary of tests with errors, failures, or issues:' . PHP_EOL . PHP_EOL);
+            foreach ($_tests as $test) {
+                $this->printTestResult($test);
+            }
 
-            $this->doPrint($tests, true);
+            $this->printer->print(PHP_EOL);
         }
     }
 
@@ -66,49 +62,8 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param array<string, TestResultCollection> $tests
+     * @psalm-param string $prettifiedClassName
      */
-    private function doPrint(array $tests, bool $onlySummary): void
-    {
-        foreach ($tests as $prettifiedClassName => $_tests) {
-            $print = true;
-
-            if ($onlySummary) {
-                $found = false;
-
-                foreach ($_tests as $test) {
-                    if ($test->status()->isSuccess()) {
-                        continue;
-                    }
-
-                    $found = true;
-
-                    break;
-                }
-
-                if (!$found) {
-                    $print = false;
-                }
-            }
-
-            if (!$print) {
-                continue;
-            }
-
-            $this->printPrettifiedClassName($prettifiedClassName);
-
-            foreach ($_tests as $test) {
-                if ($onlySummary && $test->status()->isSuccess()) {
-                    continue;
-                }
-
-                $this->printTestResult($test);
-            }
-
-            $this->printer->print(PHP_EOL);
-        }
-    }
-
     private function printPrettifiedClassName(string $prettifiedClassName): void
     {
         $buffer = $prettifiedClassName;
@@ -238,7 +193,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @return array{message: string, diff: string}
+     * @psalm-return array{message: string, diff: string}
      */
     private function colorizeMessageAndDiff(string $buffer, string $style): array
     {
@@ -271,8 +226,7 @@ final readonly class ResultPrinter
         $diff    = implode(PHP_EOL, $diff);
 
         if (!empty($message)) {
-            // Testdox output has a left-margin of 5; keep right-margin to prevent terminal scrolling
-            $message = Color::colorizeTextBox($style, $message, $this->columns - 7);
+            $message = Color::colorizeTextBox($style, $message);
         }
 
         return [
@@ -317,7 +271,7 @@ final readonly class ResultPrinter
     }
 
     /**
-     * @param 'default'|'diff'|'last'|'message'|'start'|'trace' $type
+     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
      */
     private function prefixFor(string $type, TestStatus $status): string
     {

@@ -26,8 +26,6 @@ use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Groups
@@ -38,10 +36,10 @@ final class Groups
     private static array $groupCache = [];
 
     /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      *
-     * @return array<int, string>
+     * @psalm-return array<int, string>
      */
     public function groups(string $className, string $methodName, bool $includeVirtual = true): array
     {
@@ -69,7 +67,6 @@ final class Groups
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
-                /** @phpstan-ignore booleanOr.alwaysTrue */
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
                 $groups[] = '__phpunit_covers_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
@@ -86,7 +83,6 @@ final class Groups
             }
 
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
-                /** @phpstan-ignore booleanOr.alwaysTrue */
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 $groups[] = '__phpunit_uses_' . $this->canonicalizeName($metadata->asStringForCodeUnitMapper());
@@ -105,8 +101,8 @@ final class Groups
     }
 
     /**
-     * @param class-string     $className
-     * @param non-empty-string $methodName
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     public function size(string $className, string $methodName): TestSize
     {

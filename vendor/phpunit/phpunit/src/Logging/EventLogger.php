@@ -12,7 +12,6 @@ namespace PHPUnit\Logging;
 use const FILE_APPEND;
 use const LOCK_EX;
 use const PHP_EOL;
-use const PHP_OS_FAMILY;
 use function file_put_contents;
 use function implode;
 use function preg_split;
@@ -22,14 +21,12 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Tracer\Tracer;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class EventLogger implements Tracer
+final class EventLogger implements Tracer
 {
-    private string $path;
-    private bool $includeTelemetryInfo;
+    private readonly string $path;
+    private readonly bool $includeTelemetryInfo;
 
     public function __construct(string $path, bool $includeTelemetryInfo)
     {
@@ -45,8 +42,7 @@ final readonly class EventLogger implements Tracer
 
         $flags = FILE_APPEND;
 
-        if (!(PHP_OS_FAMILY === 'Windows' || PHP_OS_FAMILY === 'Darwin') ||
-            $this->path !== 'php://stdout') {
+        if (PHP_OS_FAMILY !== 'Windows' || $this->path !== 'php://stdout') {
             $flags |= LOCK_EX;
         }
 

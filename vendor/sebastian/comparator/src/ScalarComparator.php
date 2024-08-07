@@ -44,11 +44,8 @@ class ScalarComparator extends Comparator
         // always compare as strings to avoid strange behaviour
         // otherwise 0 == 'Foobar'
         if ((is_string($expected) && !is_bool($actual)) || (is_string($actual) && !is_bool($expected))) {
-            /** @phpstan-ignore cast.string */
             $expectedToCompare = (string) $expectedToCompare;
-
-            /** @phpstan-ignore cast.string */
-            $actualToCompare = (string) $actualToCompare;
+            $actualToCompare   = (string) $actualToCompare;
 
             if ($ignoreCase) {
                 $expectedToCompare = mb_strtolower($expectedToCompare, 'UTF-8');
@@ -62,7 +59,7 @@ class ScalarComparator extends Comparator
                 $actual,
                 $exporter->export($expected),
                 $exporter->export($actual),
-                'Failed asserting that two strings are equal.',
+                'Failed asserting that two strings are equal.'
             );
         }
 
@@ -76,8 +73,8 @@ class ScalarComparator extends Comparator
                 sprintf(
                     'Failed asserting that %s matches expected %s.',
                     $exporter->export($actual),
-                    $exporter->export($expected),
-                ),
+                    $exporter->export($expected)
+                )
             );
         }
     }

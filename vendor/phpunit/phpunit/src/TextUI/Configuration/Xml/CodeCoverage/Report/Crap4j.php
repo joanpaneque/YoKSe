@@ -12,16 +12,14 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 use PHPUnit\TextUI\Configuration\File;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-final readonly class Crap4j
+final class Crap4j
 {
-    private File $target;
-    private int $threshold;
+    private readonly File $target;
+    private readonly int $threshold;
 
     public function __construct(File $target, int $threshold)
     {

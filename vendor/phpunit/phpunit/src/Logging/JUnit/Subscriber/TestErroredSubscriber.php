@@ -14,11 +14,9 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
+final class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
 {
     /**
      * @throws InvalidArgumentException

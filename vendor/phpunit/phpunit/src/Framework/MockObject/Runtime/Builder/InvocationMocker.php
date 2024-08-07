@@ -51,12 +51,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     private readonly Matcher $matcher;
 
     /**
-     * @var list<ConfigurableMethod>
+     * @psalm-var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
 
     /**
-     * @var ?array<string, int>
+     * @psalm-var ?array<string, int>
      */
     private ?array $configurableMethodNames = null;
 
@@ -303,8 +303,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     }
 
     /**
-     * @param array<mixed> $values
-     *
      * @throws IncompatibleReturnValueException
      */
     private function ensureTypeOfReturnValues(array $values): void

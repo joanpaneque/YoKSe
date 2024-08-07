@@ -12,14 +12,12 @@ namespace PHPUnit\Logging\TestDox;
 use function sprintf;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class PlainTextRenderer
+final class PlainTextRenderer
 {
     /**
-     * @param array<string, TestResultCollection> $tests
+     * @psalm-param array<string, TestResultCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -43,7 +41,7 @@ final readonly class PlainTextRenderer
     }
 
     /**
-     * @return array<string, ' '|'x'>
+     * @psalm-return array<string, 'x'|' '>
      */
     private function reduce(TestResultCollection $tests): array
     {

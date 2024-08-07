@@ -1,0 +1,82 @@
+name: laravel-build
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 8.3
+          extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --no-interaction --prefer-dist    
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Clean up
+        run: |
+          rm -rf node_modules
+          rm -rf storage
+
+      - name: Archive application
+        run: tar -czf app.tgz ./*
+
+      - name: SSH SCP and deployment
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          pass: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          connect_timeout: 10s
+          scp: |
+            './app.tgz' => ${{ secrets.SSH_DIR }}
+          last_ssh: |
+            cd ${{ secrets.SSH_DIR }}
+            tar -xzf app.tgz
+            composer install --optimize-autoloader --no-dev
+            npm install --production
+            cp env.example .env
+            sed -i "s/DB_CONNECTION=.*/DB_CONNECTION=${{ secrets.DB_CONNECTION }}/" .env
+            sed -i "s/DB_HOST=.*/DB_HOST=${{ secrets.DB_HOST }}/" .env
+            sed -i "s/DB_PORT=.*/DB_PORT=${{ secrets.DB_PORT }}/" .env
+            sed -i "s/DB_DATABASE=.*/DB_DATABASE=${{ secrets.DB_DATABASE }}/" .env
+            sed -i "s/DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/" .env
+            sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/" .env
+            mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e "DROP DATABASE IF EXISTS ${{ secrets.DB_DATABASE }}; CREATE DATABASE ${{ secrets.DB_DATABASE }};"
+            php artisan migrate --force
+            php artisan db:seed --force
+            php artisan config:cache
+            php artisan key:generate --force
+            php artisan config:cache
+            mkdir -p storage/framework/views
+            chmod -R 775 storage
+            chown -R www-data:www-data storage
+            mkdir -p bootstrap/cache
+            chmod -R 775 bootstrap/cache
+            chown -R www-data:www-data bootstrap/cache
+            php artisan optimize:clear
+            if pgrep -f 'node discord/index.js'; then
+              echo "Killing existing discord process..."
+              pkill -f 'node discord/index.js'
+            fi
+            echo "Starting new discord process..."
+            screen -dmS discord node discord/index.js

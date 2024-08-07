@@ -10,13 +10,11 @@
 namespace PHPUnit\Logging\TeamCity;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract readonly class Subscriber
+abstract class Subscriber
 {
-    private TeamCityLogger $logger;
+    private readonly TeamCityLogger $logger;
 
     public function __construct(TeamCityLogger $logger)
     {

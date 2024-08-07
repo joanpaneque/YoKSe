@@ -14,11 +14,9 @@ use DOMDocument;
 use DOMElement;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class RemoveVerboseAttribute implements Migration
+final class RemoveVerboseAttribute implements Migration
 {
     public function migrate(DOMDocument $document): void
     {

@@ -12,25 +12,21 @@ namespace PHPUnit\Util;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Cloner
+final class Cloner
 {
     /**
-     * @template OriginalType of object
+     * @psalm-template OriginalType of object
      *
-     * @param OriginalType $original
+     * @psalm-param OriginalType $original
      *
-     * @return OriginalType
+     * @psalm-return OriginalType
      */
     public static function clone(object $original): object
     {
         try {
             return clone $original;
-
-            /** @phpstan-ignore catch.neverThrown */
         } catch (Throwable) {
             return $original;
         }

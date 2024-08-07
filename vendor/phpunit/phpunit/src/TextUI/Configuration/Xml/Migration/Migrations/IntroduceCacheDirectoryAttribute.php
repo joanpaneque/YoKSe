@@ -14,11 +14,9 @@ use DOMDocument;
 use DOMElement;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class IntroduceCacheDirectoryAttribute implements Migration
+final class IntroduceCacheDirectoryAttribute implements Migration
 {
     public function migrate(DOMDocument $document): void
     {

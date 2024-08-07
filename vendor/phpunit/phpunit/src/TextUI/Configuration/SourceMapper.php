@@ -14,24 +14,21 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SplObjectStorage;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class SourceMapper
 {
     /**
-     * @var ?SplObjectStorage<Source, array<non-empty-string, true>>
+     * @psalm-var SplObjectStorage<Source, array<non-empty-string, true>>
      */
     private static ?SplObjectStorage $files = null;
 
     /**
-     * @return array<non-empty-string, true>
+     * @psalm-return array<non-empty-string, true>
      */
     public function map(Source $source): array
     {
         if (self::$files === null) {
-            /** @phpstan-ignore assign.propertyType */
             self::$files = new SplObjectStorage;
         }
 

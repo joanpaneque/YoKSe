@@ -12,11 +12,9 @@ namespace PHPUnit\TextUI;
 use PHPUnit\TestRunner\TestResult\TestResult;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ShellExitCodeCalculator
+final class ShellExitCodeCalculator
 {
     private const SUCCESS_EXIT   = 0;
     private const FAILURE_EXIT   = 1;

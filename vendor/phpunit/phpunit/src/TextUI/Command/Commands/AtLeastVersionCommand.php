@@ -13,13 +13,11 @@ use function version_compare;
 use PHPUnit\Runner\Version;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class AtLeastVersionCommand implements Command
+final class AtLeastVersionCommand implements Command
 {
-    private string $version;
+    private readonly string $version;
 
     public function __construct(string $version)
     {

@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function explode;
 use function implode;
 use function preg_match;

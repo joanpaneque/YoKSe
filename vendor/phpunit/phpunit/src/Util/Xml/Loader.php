@@ -9,19 +9,20 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function chdir;
+use function dirname;
 use function error_reporting;
 use function file_get_contents;
+use function getcwd;
 use function libxml_get_errors;
 use function libxml_use_internal_errors;
 use function sprintf;
 use DOMDocument;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Loader
+final class Loader
 {
     /**
      * @throws XmlException
@@ -69,7 +70,23 @@ final readonly class Loader
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
         $reporting = error_reporting(0);
-        $loaded    = $document->loadXML($actual);
+
+        // Required for XInclude
+        if ($filename !== null) {
+            // Required for XInclude on Windows
+            if (PHP_OS_FAMILY === 'Windows') {
+                $cwd = getcwd();
+                @chdir(dirname($filename));
+            }
+
+            $document->documentURI = $filename;
+        }
+
+        $loaded = $document->loadXML($actual);
+
+        if ($filename !== null) {
+            $document->xinclude();
+        }
 
         foreach (libxml_get_errors() as $error) {
             $message .= "\n" . $error->message;
@@ -77,6 +94,10 @@ final readonly class Loader
 
         libxml_use_internal_errors($internal);
         error_reporting($reporting);
+
+        if (isset($cwd)) {
+            @chdir($cwd);
+        }
 
         if ($loaded === false || $message !== '') {
             if ($filename !== null) {

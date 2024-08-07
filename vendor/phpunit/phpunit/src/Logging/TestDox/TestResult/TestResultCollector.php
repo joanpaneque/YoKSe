@@ -44,14 +44,12 @@ use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
 use ReflectionMethod;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestResultCollector
 {
     /**
-     * @var array<string, list<TestDoxTestMethod>>
+     * @psalm-var array<string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
     private ?TestStatus $status   = null;
@@ -68,7 +66,7 @@ final class TestResultCollector
     }
 
     /**
-     * @return array<string, TestResultCollection>
+     * @psalm-return array<string, TestResultCollection>
      */
     public function testMethodsGroupedByClass(): array
     {
@@ -100,8 +98,8 @@ final class TestResultCollector
             uksort(
                 $testsByDeclaringClass,
                 /**
-                 * @param class-string $a
-                 * @param class-string $b
+                 * @psalm-param class-string $a
+                 * @psalm-param class-string $b
                  */
                 static function (string $a, string $b): int
                 {

@@ -15,14 +15,12 @@ use Iterator;
 /**
  * @template-implements Iterator<int, TestResult>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestResultCollectionIterator implements Iterator
 {
     /**
-     * @var list<TestResult>
+     * @psalm-var list<TestResult>
      */
     private readonly array $testResults;
     private int $position = 0;

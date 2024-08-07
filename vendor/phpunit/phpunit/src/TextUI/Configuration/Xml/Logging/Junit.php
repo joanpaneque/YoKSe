@@ -12,15 +12,13 @@ namespace PHPUnit\TextUI\XmlConfiguration\Logging;
 use PHPUnit\TextUI\Configuration\File;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-final readonly class Junit
+final class Junit
 {
-    private File $target;
+    private readonly File $target;
 
     public function __construct(File $target)
     {

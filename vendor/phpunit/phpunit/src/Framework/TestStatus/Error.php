@@ -10,15 +10,16 @@
 namespace PHPUnit\Framework\TestStatus;
 
 /**
- * @immutable
- *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @psalm-immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class Error extends Known
+final class Error extends Known
 {
-    public function isError(): true
+    /**
+     * @psalm-assert-if-true Error $this
+     */
+    public function isError(): bool
     {
         return true;
     }

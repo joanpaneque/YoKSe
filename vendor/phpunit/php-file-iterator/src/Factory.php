@@ -29,10 +29,10 @@ use RecursiveIteratorIterator;
 final class Factory
 {
     /**
-     * @param list<non-empty-string>|non-empty-string $paths
-     * @param list<non-empty-string>|string           $suffixes
-     * @param list<non-empty-string>|string           $prefixes
-     * @param list<non-empty-string>                  $exclude
+     * @psalm-param list<non-empty-string>|non-empty-string $paths
+     * @psalm-param list<non-empty-string>|string $suffixes
+     * @psalm-param list<non-empty-string>|string $prefixes
+     * @psalm-param list<non-empty-string> $exclude
      */
     public function getFileIterator(array|string $paths, array|string $suffixes = '', array|string $prefixes = '', array $exclude = []): AppendIterator
     {
@@ -74,7 +74,7 @@ final class Factory
                         ),
                         $suffixes,
                         $prefixes,
-                    ),
+                    )
                 );
             }
         }
@@ -83,9 +83,9 @@ final class Factory
     }
 
     /**
-     * @param list<non-empty-string> $paths
+     * @psalm-param list<non-empty-string> $paths
      *
-     * @return list<non-empty-string>
+     * @psalm-return list<non-empty-string>
      */
     private function resolveWildcards(array $paths): array
     {

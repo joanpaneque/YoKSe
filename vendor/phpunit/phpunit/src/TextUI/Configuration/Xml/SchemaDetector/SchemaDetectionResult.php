@@ -12,16 +12,14 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use PHPUnit\Util\Xml\XmlException;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-abstract readonly class SchemaDetectionResult
+abstract class SchemaDetectionResult
 {
     /**
-     * @phpstan-assert-if-true SuccessfulSchemaDetectionResult $this
+     * @psalm-assert-if-true SuccessfulSchemaDetectionResult $this
      */
     public function detected(): bool
     {

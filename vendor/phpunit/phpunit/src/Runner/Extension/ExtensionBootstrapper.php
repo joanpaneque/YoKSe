@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner\Extension;
 
-use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function class_implements;
@@ -21,14 +20,12 @@ use ReflectionClass;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class ExtensionBootstrapper
+final class ExtensionBootstrapper
 {
-    private Configuration $configuration;
-    private Facade $facade;
+    private readonly Configuration $configuration;
+    private readonly Facade $facade;
 
     public function __construct(Configuration $configuration, Facade $facade)
     {
@@ -37,8 +34,8 @@ final readonly class ExtensionBootstrapper
     }
 
     /**
-     * @param non-empty-string      $className
-     * @param array<string, string> $parameters
+     * @psalm-param class-string $className
+     * @psalm-param array<string, string> $parameters
      */
     public function bootstrap(string $className, array $parameters): void
     {

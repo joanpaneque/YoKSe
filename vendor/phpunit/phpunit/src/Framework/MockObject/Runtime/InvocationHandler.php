@@ -16,30 +16,28 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvocationHandler
 {
     /**
-     * @var list<Matcher>
+     * @psalm-var list<Matcher>
      */
     private array $matchers = [];
 
     /**
-     * @var array<string,Matcher>
+     * @psalm-var array<string,Matcher>
      */
     private array $matcherMap = [];
 
     /**
-     * @var list<ConfigurableMethod>
+     * @psalm-var list<ConfigurableMethod>
      */
     private readonly array $configurableMethods;
     private readonly bool $returnValueGeneration;
 
     /**
-     * @param list<ConfigurableMethod> $configurableMethods
+     * @psalm-param list<ConfigurableMethod> $configurableMethods
      */
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {

@@ -12,15 +12,13 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 use PHPUnit\TextUI\Configuration\Directory;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-final readonly class Xml
+final class Xml
 {
-    private Directory $target;
+    private readonly Directory $target;
 
     public function __construct(Directory $target)
     {

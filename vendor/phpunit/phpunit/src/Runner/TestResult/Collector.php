@@ -47,8 +47,6 @@ use PHPUnit\TextUI\Configuration\Source;
 use PHPUnit\TextUI\Configuration\SourceFilter;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Collector
@@ -61,97 +59,97 @@ final class Collector
     private bool $currentTestSuiteForTestClassFailed = false;
 
     /**
-     * @var non-negative-int
+     * @psalm-var non-negative-int
      */
     private int $numberOfIssuesIgnoredByBaseline = 0;
 
     /**
-     * @var list<BeforeFirstTestMethodErrored|Errored>
+     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
      */
     private array $testErroredEvents = [];
 
     /**
-     * @var list<Failed>
+     * @psalm-var list<Failed>
      */
     private array $testFailedEvents = [];
 
     /**
-     * @var list<MarkedIncomplete>
+     * @psalm-var list<MarkedIncomplete>
      */
     private array $testMarkedIncompleteEvents = [];
 
     /**
-     * @var list<TestSuiteSkipped>
+     * @psalm-var list<TestSuiteSkipped>
      */
     private array $testSuiteSkippedEvents = [];
 
     /**
-     * @var list<TestSkipped>
+     * @psalm-var list<TestSkipped>
      */
     private array $testSkippedEvents = [];
 
     /**
-     * @var array<string,list<ConsideredRisky>>
+     * @psalm-var array<string,list<ConsideredRisky>>
      */
     private array $testConsideredRiskyEvents = [];
 
     /**
-     * @var array<string,list<PhpunitDeprecationTriggered>>
+     * @psalm-var array<string,list<PhpunitDeprecationTriggered>>
      */
     private array $testTriggeredPhpunitDeprecationEvents = [];
 
     /**
-     * @var array<string,list<PhpunitErrorTriggered>>
+     * @psalm-var array<string,list<PhpunitErrorTriggered>>
      */
     private array $testTriggeredPhpunitErrorEvents = [];
 
     /**
-     * @var array<string,list<PhpunitWarningTriggered>>
+     * @psalm-var array<string,list<PhpunitWarningTriggered>>
      */
     private array $testTriggeredPhpunitWarningEvents = [];
 
     /**
-     * @var list<TestRunnerWarningTriggered>
+     * @psalm-var list<TestRunnerWarningTriggered>
      */
     private array $testRunnerTriggeredWarningEvents = [];
 
     /**
-     * @var list<TestRunnerDeprecationTriggered>
+     * @psalm-var list<TestRunnerDeprecationTriggered>
      */
     private array $testRunnerTriggeredDeprecationEvents = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $errors = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $deprecations = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $notices = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $warnings = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpDeprecations = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpNotices = [];
 
     /**
-     * @var array<non-empty-string, Issue>
+     * @psalm-var array<non-empty-string, Issue>
      */
     private array $phpWarnings = [];
 
@@ -356,18 +354,6 @@ final class Collector
             return;
         }
 
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
-            return;
-        }
-
-        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
-            return;
-        }
-
-        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
-            return;
-        }
-
         if (!$this->source->ignoreSuppressionOfDeprecations() && $event->wasSuppressed()) {
             return;
         }
@@ -401,18 +387,6 @@ final class Collector
         if ($event->ignoredByBaseline()) {
             $this->numberOfIssuesIgnoredByBaseline++;
 
-            return;
-        }
-
-        if ($this->source->ignoreSelfDeprecations() && $event->trigger()->isSelf()) {
-            return;
-        }
-
-        if ($this->source->ignoreDirectDeprecations() && $event->trigger()->isDirect()) {
-            return;
-        }
-
-        if ($this->source->ignoreIndirectDeprecations() && $event->trigger()->isIndirect()) {
             return;
         }
 
@@ -675,7 +649,7 @@ final class Collector
     }
 
     /**
-     * @return non-empty-string
+     * @psalm-return non-empty-string
      */
     private function issueId(DeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpDeprecationTriggered|PhpNoticeTriggered|PhpWarningTriggered|WarningTriggered $event): string
     {

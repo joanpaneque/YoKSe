@@ -109,7 +109,7 @@ use SebastianBergmann\Template\Template;
 final class File extends Renderer
 {
     /**
-     * @var array<int,true>
+     * @psalm-var array<int,true>
      */
     private const KEYWORD_TOKENS = [
         T_ABSTRACT      => true,

@@ -13,11 +13,9 @@ use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
+final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
 {
     public function notify(ConsideredRisky $event): void
     {

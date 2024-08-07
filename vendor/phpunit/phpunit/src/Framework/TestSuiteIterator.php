@@ -16,8 +16,6 @@ use RecursiveIterator;
 /**
  * @template-implements RecursiveIterator<int, Test>
  *
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestSuiteIterator implements RecursiveIterator
@@ -25,7 +23,7 @@ final class TestSuiteIterator implements RecursiveIterator
     private int $position = 0;
 
     /**
-     * @var list<Test>
+     * @psalm-var list<Test>
      */
     private readonly array $tests;
 

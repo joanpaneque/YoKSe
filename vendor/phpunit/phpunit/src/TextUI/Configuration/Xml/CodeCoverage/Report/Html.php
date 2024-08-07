@@ -13,23 +13,21 @@ use PHPUnit\TextUI\Configuration\Directory;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-final readonly class Html
+final class Html
 {
-    private Directory $target;
-    private int $lowUpperBound;
-    private int $highLowerBound;
-    private string $colorSuccessLow;
-    private string $colorSuccessMedium;
-    private string $colorSuccessHigh;
-    private string $colorWarning;
-    private string $colorDanger;
-    private ?string $customCssFile;
+    private readonly Directory $target;
+    private readonly int $lowUpperBound;
+    private readonly int $highLowerBound;
+    private readonly string $colorSuccessLow;
+    private readonly string $colorSuccessMedium;
+    private readonly string $colorSuccessHigh;
+    private readonly string $colorWarning;
+    private readonly string $colorDanger;
+    private readonly ?string $customCssFile;
 
     public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
     {
@@ -85,7 +83,7 @@ final readonly class Html
     }
 
     /**
-     * @phpstan-assert-if-true !null $this->customCssFile
+     * @psalm-assert-if-true !null $this->customCssFile
      */
     public function hasCustomCssFile(): bool
     {

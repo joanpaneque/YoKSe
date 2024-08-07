@@ -14,11 +14,9 @@ use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\SkippedSubscriber;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class TestSkippedSubscriber extends Subscriber implements SkippedSubscriber
+final class TestSkippedSubscriber extends Subscriber implements SkippedSubscriber
 {
     /**
      * @throws InvalidArgumentException

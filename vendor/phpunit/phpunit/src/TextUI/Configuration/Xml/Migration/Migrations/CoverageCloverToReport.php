@@ -12,11 +12,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use DOMElement;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final readonly class CoverageCloverToReport extends LogToReportMigration
+final class CoverageCloverToReport extends LogToReportMigration
 {
     protected function forType(): string
     {

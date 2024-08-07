@@ -17,22 +17,20 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @immutable
+ * @psalm-immutable
  */
-abstract readonly class Configuration
+abstract class Configuration
 {
-    private ExtensionBootstrapCollection $extensions;
-    private Source $source;
-    private CodeCoverage $codeCoverage;
-    private Groups $groups;
-    private Logging $logging;
-    private Php $php;
-    private PHPUnit $phpunit;
-    private TestSuiteCollection $testSuite;
+    private readonly ExtensionBootstrapCollection $extensions;
+    private readonly Source $source;
+    private readonly CodeCoverage $codeCoverage;
+    private readonly Groups $groups;
+    private readonly Logging $logging;
+    private readonly Php $php;
+    private readonly PHPUnit $phpunit;
+    private readonly TestSuiteCollection $testSuite;
 
     public function __construct(ExtensionBootstrapCollection $extensions, Source $source, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
@@ -87,7 +85,7 @@ abstract readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true DefaultConfiguration $this
+     * @psalm-assert-if-true DefaultConfiguration $this
      */
     public function isDefault(): bool
     {
@@ -95,7 +93,7 @@ abstract readonly class Configuration
     }
 
     /**
-     * @phpstan-assert-if-true LoadedFromFileConfiguration $this
+     * @psalm-assert-if-true LoadedFromFileConfiguration $this
      */
     public function wasLoadedFromFile(): bool
     {

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use const PHP_OS_FAMILY;
 use function class_exists;
 use function defined;
 use function dirname;
@@ -52,7 +51,7 @@ use TheSeer\Tokenizer\Tokenizer;
 final class ExcludeList
 {
     /**
-     * @var array<string,int>
+     * @psalm-var array<string,int>
      */
     private const EXCLUDED_CLASS_NAMES = [
         // composer
@@ -138,14 +137,14 @@ final class ExcludeList
     ];
 
     /**
-     * @var list<string>
+     * @psalm-var list<string>
      */
     private static array $directories = [];
     private static bool $initialized  = false;
     private readonly bool $enabled;
 
     /**
-     * @param non-empty-string $directory
+     * @psalm-param non-empty-string $directory
      *
      * @throws InvalidDirectoryException
      */
@@ -168,7 +167,7 @@ final class ExcludeList
     }
 
     /**
-     * @return list<string>
+     * @psalm-return list<string>
      */
     public function getExcludedDirectories(): array
     {

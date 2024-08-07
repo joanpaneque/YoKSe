@@ -14,14 +14,12 @@ use function array_values;
 use function strtolower;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class MockMethodSet
 {
     /**
-     * @var array<string,MockMethod>
+     * @psalm-var array<string,MockMethod>
      */
     private array $methods = [];
 
@@ -33,7 +31,7 @@ final class MockMethodSet
     }
 
     /**
-     * @return list<MockMethod>
+     * @psalm-return list<MockMethod>
      */
     public function asArray(): array
     {

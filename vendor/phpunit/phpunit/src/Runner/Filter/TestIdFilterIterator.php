@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use function in_array;
+use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -19,20 +20,18 @@ use RecursiveFilterIterator;
 use RecursiveIterator;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
- *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestIdFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * @var non-empty-list<non-empty-string>
+     * @psalm-var non-empty-list<non-empty-string>
      */
     private readonly array $testIds;
 
     /**
-     * @param RecursiveIterator<int, Test>     $iterator
-     * @param non-empty-list<non-empty-string> $testIds
+     * @psalm-param RecursiveIterator<int, Test> $iterator
+     * @psalm-param non-empty-list<non-empty-string> $testIds
      */
     public function __construct(RecursiveIterator $iterator, array $testIds)
     {
@@ -55,7 +54,7 @@ final class TestIdFilterIterator extends RecursiveFilterIterator
 
         try {
             return in_array($test->valueObjectForEvents()->id(), $this->testIds, true);
-        } catch (NoDataSetFromDataProviderException) {
+        } catch (MoreThanOneDataSetFromDataProviderException|NoDataSetFromDataProviderException) {
             return false;
         }
     }
