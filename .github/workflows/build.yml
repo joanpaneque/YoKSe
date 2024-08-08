@@ -54,6 +54,8 @@ jobs:
           last_ssh: |
             cd ${{ secrets.SSH_DIR }} 
             tar -xzf app.tgz
+            screen -S yokse_bot -X quit
+            screen -dmS yokse_bot node discord/index.js
             composer install --optimize-autoloader --no-dev
             npm install --production
             cp env.example .env
@@ -80,5 +82,3 @@ jobs:
             chown -R www-data:www-data public
             chmod -R 775 public
             php artisan optimize:clear
-            screen -S yokse_bot -X quit
-            screen -dmS yokse_bot node discord/index.js
