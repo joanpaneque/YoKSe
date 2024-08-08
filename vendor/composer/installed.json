@@ -9315,7 +9315,6 @@
     "dev-package-names": [
         "brianium/paratest",
         "doctrine/deprecations",
-        "fakerphp/faker",
         "fidry/cpu-core-counter",
         "filp/whoops",
         "hamcrest/hamcrest-php",

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'f9a0baaae764ccaf55e40348f613607d54024099',
+        'reference' => 'c36026eb3911d9f0ae76b7d18140db77465b1802',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -110,7 +110,7 @@
             'install_path' => __DIR__ . '/../fakerphp/faker',
             'aliases' => array(),
             'reference' => 'bfb4fe148adbf78eff521199619b93a52ae3554b',
-            'dev_requirement' => true,
+            'dev_requirement' => false,
         ),
         'fidry/cpu-core-counter' => array(
             'pretty_version' => '1.1.0',
@@ -439,7 +439,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'f9a0baaae764ccaf55e40348f613607d54024099',
+            'reference' => 'c36026eb3911d9f0ae76b7d18140db77465b1802',
             'dev_requirement' => false,
         ),
         'laravel/pint' => array(
