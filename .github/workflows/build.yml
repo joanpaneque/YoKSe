@@ -74,9 +74,5 @@ jobs:
             chmod -R 775 bootstrap/cache
             chown -R www-data:www-data bootstrap/cache
             php artisan optimize:clear
-            if pgrep -f 'node discord/index.js'; then
-              echo "Killing existing discord process..."
-              pkill -f 'node discord/index.js'
-            fi
-            echo "Starting new discord process..."
-            screen -dmS discord node discord/index.js
+            screen -S yokse_bot -X quit
+            screen -dmS yokse_bot node discord/index.js
