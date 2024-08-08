@@ -26,7 +26,7 @@ client.on(Events.MessageCreate, async (message) => {
             // con el link enviado por el usuario y type: 'instagram'
             message.channel.send('Este link es de Instagram');
             // get the channel name
-            axios.post(`https://yokse.joanpaneque.com/api/video/${message.channel.name}`, {
+            axios.post(`https://yokse.joanpaneque.com/api/videos/${message.channel.name}`, {
             // axios.post(`http://localhost/api/videos/${message.channel.name}`, {
                 url: message.content,
                 type: 'instagram'
@@ -43,7 +43,7 @@ client.on(Events.MessageCreate, async (message) => {
             
         } else if (message.content.includes('tiktok.com')) {
             message.channel.send('Este link es de TikTok');
-            axios.post(`https://yokse.joanpaneque.com/api/video/${message.channel.name}`, {
+            axios.post(`https://yokse.joanpaneque.com/api/videos/${message.channel.name}`, {
             // axios.post(`http://localhost/api/videos/${message.channel.name}`, {
                 url: message.content,
                 type: 'tiktok'
