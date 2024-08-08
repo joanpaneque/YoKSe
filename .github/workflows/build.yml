@@ -22,34 +22,37 @@ jobs:
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --no-interaction --prefer-dist
+        run: composer install --no-dev --no-interaction --prefer-dist    
 
       - name: Install npm dependencies
-        run: npm install --omit=dev
+        run: npm install
 
       - name: Build assets
         run: npm run build
 
+      - name: Clean up
+        run: |
+          rm -rf node_modules
+          rm -rf storage
+
       - name: Archive application
         run: tar -czf app.tgz ./*
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: app-archive
-          path: app.tgz
-
-      - name: Deploy application
-        uses: appleboy/ssh-action@v0.1.7
+      - name: SSH SCP and deployment
+        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+        env:
+          WELCOME: "ssh scp ssh pipelines"
+          LASTSSH: "Doing something after copying"
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          user: ${{ secrets.SSH_USER }}
+          pass: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          script: |
-            mkdir -p ${{ secrets.SSH_DIR }}
-            scp -P ${{ secrets.SSH_PORT }} -i ${{ secrets.SSH_PRIVATE_KEY }} app.tgz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_DIR }}
-            cd ${{ secrets.SSH_DIR }}
+          connect_timeout: 10s
+          scp: |
+            './app.tgz' => ${{ secrets.SSH_DIR }}
+          last_ssh: |
+            cd ${{ secrets.SSH_DIR }} 
             tar -xzf app.tgz
             composer install --optimize-autoloader --no-dev
             npm install --production
@@ -60,6 +63,8 @@ jobs:
             sed -i "s/DB_DATABASE=.*/DB_DATABASE=${{ secrets.DB_DATABASE }}/" .env
             sed -i "s/DB_USERNAME=.*/DB_USERNAME=${{ secrets.DB_USERNAME }}/" .env
             sed -i "s/DB_PASSWORD=.*/DB_PASSWORD=${{ secrets.DB_PASSWORD }}/" .env
+            sed -i "s/GOOGLE_CLIENT_ID=.*/GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}/" .env
+            sed -i "s/GOOGLE_CLIENT_SECRET=.*/GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}/" .env
             mysql -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} -e "DROP DATABASE IF EXISTS ${{ secrets.DB_DATABASE }}; CREATE DATABASE ${{ secrets.DB_DATABASE }};"
             php artisan migrate --force
             php artisan db:seed --force
@@ -72,6 +77,8 @@ jobs:
             mkdir -p bootstrap/cache
             chmod -R 775 bootstrap/cache
             chown -R www-data:www-data bootstrap/cache
+            chown -R www-data:www-data public
+            chmod -R 775 public
             php artisan optimize:clear
-            screen -S yokse_bot -X quit || true
+            screen -S yokse_bot -X quit
             screen -dmS yokse_bot node discord/index.js
