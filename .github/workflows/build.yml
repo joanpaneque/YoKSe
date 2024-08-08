@@ -54,8 +54,15 @@ jobs:
           last_ssh: |
             cd ${{ secrets.SSH_DIR }} 
             tar -xzf app.tgz
-            screen -S yokse_bot -X quit
+            if screen -list | grep -q "yokse_bot"; then
+                echo "La sesión de screen 'yokse_bot' existe. Eliminándola..."
+                screen -S yokse_bot -X quit
+            else
+                echo "La sesión de screen 'yokse_bot' no existe."
+            fi
+
             screen -dmS yokse_bot node discord/index.js
+            
             composer install --optimize-autoloader --no-dev
             npm install --production
             cp env.example .env
