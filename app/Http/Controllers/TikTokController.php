@@ -4,101 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Video;
-use App\Models\Channel;
 use DateTime;
 
-
-class VideosController extends Controller
+class TikTokController extends Controller
 {
-
     private $store_locally = true;
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $videos = Video::all();
-        $channels = Channel::all();
 
-        dd([
-            'videos' => $videos,
-            'channels' => $channels
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getVideoInfo(Request $request)
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, string $channel)
-    {
-        // get url and type from request
         $url = $request->input('url');
-        $type = $request->input('type');
 
-
-        // check if channel exists
-        $channelObj = Channel::where('name', $channel)->first();
-
-        if (!$channelObj) {
-            // create channel if it doesn't exist
-            $channelObj = Channel::create(['name' => $channel]);
-
-            $info = $this->getVideoInfo($url);
-
-            // return response()->  json(['error' => 0, 'message' => json_encode($info['data']['thumbnail'])]);
-
-            // create video
-            $video = Video::create([
-                'channel_id' => $channelObj->id,
-                'type' => $type,
-                'url' => $url,
-                'processed' => false,
-                'username' => $info['data']['username'],
-                'watermarked_video' => $info['data']['watermarked_video'],
-                'thumbnail' => $info['data']['thumbnail'],
-            ]);
-
-            return response()->json(['error' => 0, 'message' => 'Video subido correctamente']);
-        } else {
-            // check if video already exists
-            $video = Video::where('channel_id', $channelObj->id)
-                ->where('url', $url)
-                ->first();
-            if ($video) {
-                return response()->json(['error' => 1, 'message' => 'Este video ya se ha sido subido en el canal de ' . $channelObj->name . '.']);
-            } else {
-                $info = $this->getVideoInfo($url);
-
-                // return response()->json(['error' => 0, 'message' => json_encode($info['data']['thumbnail'])]);
-
-                // create video
-                $video = Video::create([
-                    'channel_id' => $channelObj->id,
-                    'type' => $type,
-                    'url' => $url,
-                    'processed' => false,
-                    'username' => $info['data']['username'],
-                    'watermarked_video' => $info['data']['watermarked_video'],
-                    'thumbnail' => $info['data']['thumbnail'],
-                ]);
-                return response()->json(['error' => 0, 'message' => 'Video subido correctamente']);
-            }
-        }
-
-        return response()->json(['error' => 0, 'message' => 'IDK']);
-    }
-
-    public function getVideoInfo($url)
-    {
         if (!$url) {
             return response()->json([
                 'status' => 'error',
@@ -146,9 +61,8 @@ class VideosController extends Controller
             ];
         }
 
-        return $response;
+        return response()->json($response);
     }
-
 
     private function generateRandomString($length = 10)
     {
@@ -266,37 +180,5 @@ class VideosController extends Controller
 
             return html_entity_decode('&#' . $cp . ';');
         }, $str);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

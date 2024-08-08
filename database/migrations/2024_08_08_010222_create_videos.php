@@ -18,6 +18,12 @@ return new class extends Migration
             $table->foreignId('channel_id')->constrained()->onDelete('cascade');
             $table->string('type');
             $table->string('url');
+
+            $table->text('thumbnail')->nullable();
+            $table->string('username')->nullable();
+            $table->text('watermarked_video')->nullable();
+            $table->string('watermark_free_video')->nullable();
+
             $table->boolean('processed')->default(false);
         });
     }

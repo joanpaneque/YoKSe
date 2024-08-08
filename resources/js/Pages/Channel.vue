@@ -51,7 +51,9 @@ const moveToTop = (index) => {
                 </button>
                 <button @click="moveDown(index)" class="bajar bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">&lt;</button>
                 <button @click="moveToTop(index)" class="move-top bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2">Top</button>
-                <a :href="video.url" target="_blank" class="text-blue-500 hover:underline mr-4">{{ video.url }}</a>
+                <a :href="video.url" target="_blank" class="text-blue-500 hover:underline mr-4">
+                    <img :src="video.thumbnail" alt="Thumbnail" class="w-32 h-24">
+                </a>
             </div>
         </div>
 

@@ -9,6 +9,8 @@ use App\Http\Controllers\TestController;
 
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\VideosController;
+use App\Http\Controllers\TikTokController;
+
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
@@ -25,3 +27,6 @@ Route::post('/api/videos/{channel}', [App\Http\Controllers\VideosController::cla
 Route::get('/api/videos', [App\Http\Controllers\VideosController::class, 'index']);
 
 Route::get('/channels/{channel}', [App\Http\Controllers\ChannelsController::class, 'show'])->name('channels.show');
+
+
+Route::get('/tiktok-info', [TikTokController::class, 'getVideoInfo']);
