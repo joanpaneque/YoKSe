@@ -27,6 +27,7 @@ Route::post('/api/videos/{channel}', [App\Http\Controllers\VideosController::cla
 Route::get('/api/videos', [App\Http\Controllers\VideosController::class, 'index']);
 
 Route::get('/channels/{channel}', [App\Http\Controllers\ChannelsController::class, 'show'])->name('channels.show');
+Route::post('/render-video', [App\Http\Controllers\RenderVideoController::class, 'render'])->name('videos.render');
 
 
 Route::get('/tiktok-info', [TikTokController::class, 'getVideoInfo']);

@@ -122,13 +122,16 @@ class VideosController extends Controller
             $cleanVideo = "https://api2-16-h2.musical.ly/aweme/v1/play/?video_id=$videoKey&vr_type=0&is_play_url=1&source=PackSourceEnum_PUBLISH&media_type=4";
             $cleanVideo = $this->getContent($cleanVideo, true);
 
+
+            $randomString = $this->generateRandomString();
+
             $response = [
                 'status' => 'success',
                 'data' => [
                     'thumbnail' => $thumb,
                     'username' => $username,
                     'created_at' => $create_time,
-                    'watermarked_video' => $this->store_locally ? 'user_videos/' . $this->generateRandomString() . '.mp4' : $contentURL,
+                    'watermarked_video' => $this->store_locally ? 'user_videos/' . $randomString . '.mp4' : $contentURL,
                     'watermark_free_video' => $cleanVideo
                 ]
             ];
@@ -136,7 +139,7 @@ class VideosController extends Controller
             if ($this->store_locally) {
                 // Guardar el video localmente
                 $videoContent = $this->getContent($contentURL, false);
-                $filename = "user_videos/" . $this->generateRandomString() . ".mp4";
+                $filename = "user_videos/" . $randomString . ".mp4";
                 Storage::disk('public')->put($filename, $videoContent);
             }
         } else {

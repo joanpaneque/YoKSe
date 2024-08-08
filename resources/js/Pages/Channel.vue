@@ -11,6 +11,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    url: {
+        type: String,
+        required: false,
+    },
 });
 
 const videos = ref([...props.videos]);
@@ -37,6 +41,13 @@ const moveToTop = (index) => {
         videos.value.unshift(temp);
     }
 };
+
+function renderVideo() {
+    router.post(route('videos.render', { channel: props.channel.id }), {
+        videos: videos.value.map((video) => video.watermarked_video),
+    });
+}
+
 </script>
 
 <template>
@@ -57,8 +68,11 @@ const moveToTop = (index) => {
             </div>
         </div>
 
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" @click="router.get(route('videos.render', { channel: props.channel.id }))">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" @click="renderVideo">
             Renderizar vídeo
+        </button>
+        <button v-if="props.url" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="window.open(props.url)">
+            Descargar vídeo
         </button>
     </div>
 </template>
