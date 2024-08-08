@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Video;
 use App\Models\Channel;
 
+
 class VideosController extends Controller
 {
     /**
@@ -54,6 +55,7 @@ class VideosController extends Controller
                 'url' => $url,
                 'processed' => false
             ]);
+
             return response()->json(['error' => 0, 'message' => 'Video subido correctamente']);
         } else {
             // check if video already exists
