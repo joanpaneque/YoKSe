@@ -9,10 +9,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
+
       - name: Setup PHP
         uses: shivammathur/setup-php@master
         with:
@@ -20,36 +22,33 @@ jobs:
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --no-interaction --prefer-dist    
+        run: composer install --no-dev --no-interaction --prefer-dist
 
       - name: Install npm dependencies
-        run: npm install
+        run: npm install --omit=dev
 
       - name: Build assets
         run: npm run build
 
-      - name: Clean up
-        run: |
-          rm -rf node_modules
-          rm -rf storage
-
       - name: Archive application
         run: tar -czf app.tgz ./*
 
-      - name: SSH SCP and deployment
-        uses: cross-the-world/ssh-scp-ssh-pipelines@latest
-        env:
-          WELCOME: "ssh scp ssh pipelines"
-          LASTSSH: "Doing something after copying"
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-archive
+          path: app.tgz
+
+      - name: Deploy application
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USER }}
-          pass: ${{ secrets.SSH_PASSWORD }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          connect_timeout: 10s
-          scp: |
-            './app.tgz' => ${{ secrets.SSH_DIR }}
-          last_ssh: |
+          script: |
+            mkdir -p ${{ secrets.SSH_DIR }}
+            scp -P ${{ secrets.SSH_PORT }} -i ${{ secrets.SSH_PRIVATE_KEY }} app.tgz ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_DIR }}
             cd ${{ secrets.SSH_DIR }}
             tar -xzf app.tgz
             composer install --optimize-autoloader --no-dev
@@ -74,5 +73,5 @@ jobs:
             chmod -R 775 bootstrap/cache
             chown -R www-data:www-data bootstrap/cache
             php artisan optimize:clear
-            screen -S yokse_bot -X quit
+            screen -S yokse_bot -X quit || true
             screen -dmS yokse_bot node discord/index.js
