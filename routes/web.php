@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+use App\Http\Controllers\IndexController;
+use App\Http\Controllers\VideosController;
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -23,5 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+Route::post('/api/videos/{channel}', [App\Http\Controllers\VideosController::class, 'store']);
+Route::get('/api/videos', [App\Http\Controllers\VideosController::class, 'index']);
 
 require __DIR__.'/auth.php';

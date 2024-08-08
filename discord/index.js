@@ -1,5 +1,6 @@
 const { Client, Events } = require('discord.js');
 require('dotenv').config();
+const axios = require('axios');
 
 
 const client = new Client({
@@ -21,9 +22,41 @@ client.on(Events.MessageCreate, async (message) => {
         message.channel.send('No puedes enviar mensajes que no sean links');
     } else {
         if (message.content.includes('instagram.com')) {
-            // hacer un post a 
+            // hacer una peticion http post a https://yokse.joanpaneque.com/api/video
+            // con el link enviado por el usuario y type: 'instagram'
+            message.channel.send('Este link es de Instagram');
+            // get the channel name
+            axios.post(`https://yokse.joanpaneque.com/api/video/${message.channel.name}`, {
+            // axios.post(`http://localhost/api/videos/${message.channel.name}`, {
+                url: message.content,
+                type: 'instagram'
+            }).then((response) => {
+                if (response.data.error) {
+                    message.channel.send("[ YoKSe ERROR ]: " + response.data.message);
+                } else {
+                    message.channel.send(response.data.message);
+                }
+            }).catch((error) => {
+                message.channel.send(`Error inesperado`);
+                console.log(error);
+            });
+            
         } else if (message.content.includes('tiktok.com')) {
             message.channel.send('Este link es de TikTok');
+            axios.post(`https://yokse.joanpaneque.com/api/video/${message.channel.name}`, {
+            // axios.post(`http://localhost/api/videos/${message.channel.name}`, {
+                url: message.content,
+                type: 'tiktok'
+            }).then((response) => {
+                if (response.data.error) {
+                    message.channel.send("[ YoKSe ERROR ]: " + response.data.message);
+                } else {
+                    message.channel.send(response.data.message);
+                }
+            }).catch((error) => {
+                message.channel.send(`Error inesperado`);
+                console.log(error);
+            });
         }
     }
 });
