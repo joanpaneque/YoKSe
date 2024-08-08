@@ -4,5 +4,5 @@ if screen -list | grep -q "yokse_bot"; then
 else
     echo "La sesión de screen 'yokse_bot' no existe."
 fi
-
-screen -dmS yokse_bot node discord/index.js
+cd discord
+screen -dmS yokse_bot node index.js
