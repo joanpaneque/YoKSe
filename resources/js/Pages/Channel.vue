@@ -42,12 +42,22 @@ const moveToTop = (index) => {
     }
 };
 
+const moveToBottom = (index) => {
+    if (index < videos.value.length - 1) {
+        const temp = videos.value.splice(index, 1)[0];
+        videos.value.push(temp);
+    }
+};
+
+const deleteVideo = (index) => {
+    videos.value.splice(index, 1);
+};
+
 function renderVideo() {
     router.post(route('videos.render', { channel: props.channel.id }), {
         videos: videos.value.map((video) => video.watermarked_video),
     });
 }
-
 </script>
 
 <template>
@@ -62,9 +72,13 @@ function renderVideo() {
                 </button>
                 <button @click="moveDown(index)" class="bajar bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">&lt;</button>
                 <button @click="moveToTop(index)" class="move-top bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mr-2">Top</button>
+                <button @click="moveToBottom(index)" class=" bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded mr-2">Bottom</button>
                 <a :href="video.url" target="_blank" class="text-blue-500 hover:underline mr-4">
                     <img :src="video.thumbnail" alt="Thumbnail" class="w-32 h-24">
                 </a>
+                <button @click="deleteVideo(index)" class="delete-video bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    Delete
+                </button>
             </div>
         </div>
 
@@ -88,5 +102,9 @@ function renderVideo() {
 
 .move-top {
     transform: rotate(0deg);
+}
+
+.move-bottom {
+    transform: rotate(180deg);
 }
 </style>

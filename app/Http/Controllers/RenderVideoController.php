@@ -16,11 +16,12 @@ class RenderVideoController extends Controller
         return substr(str_shuffle(str_repeat($x = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length / strlen($x)))), 1, $length);
     }
 
-
     public function render(Request $request)
     {
         // Obtén los videos desde la solicitud
         $videos = $request->input('videos');
+
+        array_unshift($videos, 'user_videos/like_and_sub.mp4');
 
         // Verifica si hay al menos dos videos
         if (count($videos) < 2) {
@@ -40,7 +41,7 @@ class RenderVideoController extends Controller
                 'ffmpeg',
                 '-i', $inputPath,
                 '-vf', 'scale=1920:1080', // Cambia la resolución a 1920x1080 (HD)
-                '-r', '60', // Fija la tasa de cuadros a 30 fps
+                '-r', '60', // Fija la tasa de cuadros a 60 fps
                 '-c:v', 'libx264', // Re-codifica el video con códec H.264
                 '-preset', 'fast', // Preset de velocidad
                 '-crf', '23', // Control de calidad
@@ -51,15 +52,22 @@ class RenderVideoController extends Controller
                 $outputPath
             ]);
 
-            $process->setTimeout(300);
+            $process->setTimeout(90000);
             try {
                 $process->mustRun();
                 $normalizedVideos[] = $outputPath;
             } catch (ProcessFailedException $exception) {
-                return response()->json([
-                    'error' => 'Error al normalizar el video: ' . $exception->getMessage()
-                ], 500);
+                // Log the error and continue to the next video
+                \Log::error("Error al normalizar el video {$inputPath}: " . $exception->getMessage());
+                continue;
             }
+        }
+
+        // Verifica si hay al menos dos videos normalizados
+        if (count($normalizedVideos) < 2) {
+            return response()->json([
+                'error' => 'Se necesitan al menos dos videos válidos para combinar.'
+            ], 400);
         }
 
         // Crea el archivo de lista de archivos para ffmpeg
@@ -89,7 +97,7 @@ class RenderVideoController extends Controller
             $outputVideoPath
         ]);
 
-        $process->setTimeout(1000);
+        $process->setTimeout(90000);
         try {
             $process->mustRun();
         } catch (ProcessFailedException $exception) {
@@ -105,11 +113,6 @@ class RenderVideoController extends Controller
         foreach ($normalizedVideos as $videoPath) {
             unlink($videoPath);
         }
-
-
-
-        // Storage::disk('public')->move('user_videos/combined_video.mp4', $randomName);
-
 
         // Generar un nombre aleatorio
         $randomName = 'user_videos/' . $this->generateRandomString() . '.mp4';
@@ -127,6 +130,5 @@ class RenderVideoController extends Controller
 
         // redirect back with url
         return redirect()->back()->with('url', 'user_videos/' . basename($randomName));
-        
     }
 }
